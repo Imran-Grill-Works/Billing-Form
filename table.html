@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="html2pdf.bundle.min.js"></script>
+
+</head>
+<body onload="load_data()" >
+
+<div class="container" id="contnet">
+<h2 style="text-align: right;margin-top: 5%;">Imran Grill Works</h2>
+<p style="text-align: right; ">Gurukul Road, Terdal- 587315</p>
+<p style="text-align: right;">+91 8151860841, +91 9110443068</p>
+  
+<h3>Customer Details</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>Place</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="customer_data">
+      <!--JavaScript -->
+    </tbody>
+  </table>
+
+  <h3>Billing Details</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Item Name</th>
+        <th>Total kg</th>
+        <th>Price per kg</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody id="table_data">
+      <!--JavaScript -->
+    </tbody>
+  </table>
+  <h6 style="text-align: right; margin-right: 15%;" ><b id="grand-total"></b></h6>
+  <h3>Payment Details</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Total Payment</th>
+        <th>Advance Payment</th>
+        <th>Due Payment</th>
+      </tr>
+    </thead>
+    <tbody id="payment_data">
+      <!--JavaScript -->
+    </tbody>
+  </table>
+
+
+  
+</div>
+<div id="elementH"></div>
+
+<div class="container">
+
+<button type="submit" onclick="location.href='form.html';" class="btn btn-primary" id="submit">Home</button> 
+<button  class="btn btn-primary" onclick="generatePDF()">Download</button> 
+
+</div>
+<script>
+    function load_data() {
+        var max_index = localStorage.getItem("max_index")
+        var i = 0
+        var total_amount = 0
+        for(i=0; i<=max_index; i++) {
+            var item_name = localStorage.getItem(i)
+            console.log(item_name)
+            if (item_name != null) {
+                var item_qty = localStorage.getItem(i+1000)
+                var kg_price = localStorage.getItem(i+2000)
+                total_amount += kg_price*item_qty
+
+                var para = document.createElement("tr");
+                para.innerHTML = '<td>'+(i+1)+'</td><td>'+item_name+'</td><td>'+item_qty+'<span style="margin-left: 0.5em;">kg</span>'+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'
+                +kg_price+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+ kg_price*item_qty +'</td>'
+                document.getElementById('table_data').appendChild(para)
+            }
+        }
+        document.getElementById("grand-total").innerText = "Total: "+"Rs."+total_amount;
+        var customer_name = localStorage.getItem("customer_name")
+        var customer_place = localStorage.getItem("customer_place")
+        var advance_payment = localStorage.getItem("advance_payment")
+        advance_payment = advance_payment == null || advance_payment == 0 ? 0 : advance_payment;
+
+        var date = new Date()
+        var day = date.getDay()
+        day = day < 10 ? '0'+day : day;
+
+        var month = date.getMonth()
+        month = month < 10 ? '0'+month : month;
+        var minutes = date.getMinutes()
+        var hours = date.getHours()
+        hours = hours > 12 ? hours-12 : hours;
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+
+        var customer_data = document.createElement("tr");
+        customer_data.innerHTML = '<td>'+1+'</td><td>'+customer_name+'</td><td>'+customer_place+'</td><td>'+
+        day+' - '+month+' - '+date.getFullYear()+'</td><td>'+hours+':'+minutes+'</td>';
+        document.getElementById('customer_data').appendChild(customer_data)
+
+        
+        var payment_data = document.createElement("tr");
+        payment_data.innerHTML = '<td>'+1+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+
+        total_amount+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+advance_payment+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+
+        (total_amount-advance_payment)+'</td>';
+        document.getElementById('payment_data').appendChild(payment_data)
+
+
+        localStorage.clear()
+        
+    }
+
+    function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("contnet");
+        // Choose the element and save the PDF for our user.
+        html2pdf()
+          .from(element)
+          .save();
+      }
+</script>
+
+</body>
+</html>
