@@ -20,7 +20,7 @@
 <div class="container" >
 
   <h2>Billing Form</h2>
-  <form class="form-horizontal" action='/table.html'>
+  <form class="form-horizontal">
     <div class="container" id="myDIV">
     <div class="form-group">
       <label class="control-label col-sm-2" for="name">Name:</label>
@@ -76,7 +76,7 @@
     <div class="form-group" >        
       <div class="col-sm-offset-2 col-sm-10">
         <button class="btn btn-default" id = "btnSeccion" onclick="add_item()">Add Item</button>
-        <button type="submit"  name="submit" class="btn btn-primary" id="submit">Submit</button> 
+        <button type="submit"  name="submit" onclick="location.href='table.html';" class="btn btn-primary" id="submit">Submit</button> 
       </div>
     </div>
   </form>
