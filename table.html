@@ -102,10 +102,10 @@
         advance_payment = advance_payment == null || advance_payment == 0 ? 0 : advance_payment;
 
         var date = new Date()
-        var day = date.getDay()
+        var day = date.getDate()
         day = day < 10 ? '0'+day : day;
 
-        var month = date.getMonth()
+        var month = date.getMonth()+1
         month = month < 10 ? '0'+month : month;
         var minutes = date.getMinutes()
         var hours = date.getHours()
