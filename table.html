@@ -57,6 +57,7 @@
         <th>S.No</th>
         <th>Total Payment</th>
         <th>Advance Payment</th>
+        <th>Transport Charge</th>
         <th>Due Payment</th>
       </tr>
     </thead>
@@ -100,6 +101,8 @@
         var customer_place = localStorage.getItem("customer_place")
         var advance_payment = localStorage.getItem("advance_payment")
         advance_payment = advance_payment == null || advance_payment == 0 ? 0 : advance_payment;
+        var transport_charge = localStorage.getItem("transport_charge")
+        transport_charge = transport_charge == null || transport_charge == 0 ? 0 : transport_charge;
 
         var date = new Date()
         var day = date.getDate()
@@ -121,7 +124,7 @@
         var payment_data = document.createElement("tr");
         payment_data.innerHTML = '<td>'+1+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+
         total_amount+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+advance_payment+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+
-        (total_amount-advance_payment)+'</td>';
+        parseInt(transport_charge)+'</td><td><span style="margin-right: 0.2em;">Rs.</span>'+(total_amount-advance_payment+parseInt(transport_charge))+'</td>';
         document.getElementById('payment_data').appendChild(payment_data)
 
 
